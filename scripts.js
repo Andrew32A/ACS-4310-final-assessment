@@ -61,4 +61,49 @@ d3.csv("./data/2019.csv").then(function (data) {
     .attr("height", function (d) {
       return height - yScale(d["Score"]);
     });
+
+  // challenge 8
+  const xAxis = d3.axisBottom(xScale);
+
+  svg
+    .append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")
+    .attr("y", 0)
+    .attr("x", 9)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(90)")
+    .style("text-anchor", "start");
+
+  // challenge 9
+  const yAxis = d3.axisLeft(yScale);
+
+  svg.append("g").attr("class", "y-axis").call(yAxis);
+
+  // challenge 10
+  const colorScale = d3
+    .scaleOrdinal()
+    .domain(
+      topCountries.map(function (d) {
+        return d["Country or region"];
+      })
+    )
+    .range([
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#7f7f7f",
+      "#bcbd22",
+      "#17becf",
+    ]);
+
+  svg.selectAll("rect").style("fill", function (d) {
+    return colorScale(d["Country or region"]);
+  });
 });
