@@ -28,4 +28,37 @@ d3.csv("./data/2019.csv").then(function (data) {
     )
     .range([0, width])
     .padding(0.1);
+
+  // challenge 6
+  const yExtent = d3.extent(topCountries, function (d) {
+    return +d["Score"];
+  });
+  const yScale = d3
+    .scaleLinear()
+    .domain([Math.floor(yExtent[0]), Math.ceil(yExtent[1])])
+    .range([height, 0]);
+
+  // challenge 7
+  const svg = d3
+    .select("#chart")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg
+    .selectAll("rect")
+    .data(topCountries)
+    .enter()
+    .append("rect")
+    .attr("x", function (d) {
+      return xScale(d["Country or region"]);
+    })
+    .attr("y", function (d) {
+      return yScale(d["Score"]);
+    })
+    .attr("width", xScale.bandwidth())
+    .attr("height", function (d) {
+      return height - yScale(d["Score"]);
+    });
 });
